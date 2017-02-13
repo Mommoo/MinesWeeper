@@ -10,9 +10,9 @@ public class MommooPanel {
 	private final MinePlant MINE_PLANT;
 	
 	public static void main(String[] args){
-		MommooPanel mine = new MommooPanel(-1,7,10);
+		MommooPanel mine = new MommooPanel(7,7,20);
 		/** Debugging */
-		System.out.println(mine);
+	//	System.out.println(mine);
 	}
 	
 	public MommooPanel(final int col,final int row,final int mineCnt){
@@ -26,14 +26,14 @@ public class MommooPanel {
 		System.out.println(this.MINE_PLANT);
 	}
 	
-	/** If col,row and mineCnt is invalid condition, fire error */
+	/** If col,row and mineCnt are invalid condition, fire error */
 	private void isValid(final int col,final int row,final int mineCnt){
 		if(col>=MIN_COL&&col<=MAX_COL
 			&&row>=MIN_ROW&&row<=MAX_ROW
 			&&mineCnt>=MIN_MINE_CNT&&mineCnt<=MAX_MINE_CNT){
 		} else
 			try {
-				throw new Exception("col is valid from "+MIN_COL+"to"+MAX_COL+"\n"
+				throw new Exception("col is valid from "+MIN_COL+" to "+MAX_COL+"\n"
 						+ "row is valid from "+MIN_ROW+" to "+MAX_ROW+"\n"
 						+ "mineCnt is valid from "+MIN_MINE_CNT+" to " +MAX_MINE_CNT);
 			} catch (Exception e) {
@@ -42,7 +42,7 @@ public class MommooPanel {
 	}
 	
 	/**
-	 *  To manage mine efficiently, MinePlant class created 
+	 *  To manage mine efficiently, MinePlant class is created 
 	 * */
 	private final class MinePlant{
 		private final boolean[][] MINE_REPOSITORY = new boolean[PANEL_COL][PANEL_ROW];
