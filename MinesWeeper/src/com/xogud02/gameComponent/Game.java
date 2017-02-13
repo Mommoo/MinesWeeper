@@ -1,5 +1,7 @@
 package com.xogud02.gameComponent;
 
+import java.util.Random;
+
 public class Game {
 
 }
@@ -46,12 +48,39 @@ class Tile{
 	}
 }
 
-class TilePanel{
+class Panel{
 	public final int PANEL_WIDTH, PANEL_HEIGHT;
 	public final int MINE_NUM;
-	public TilePanel(int x,int y, int num){
-		PANEL_WIDTH = x;
-		PANEL_HEIGHT = y;
-		MINE_NUM = num;
+	private boolean[][] minePlanted;
+	private static final Random r = new Random();
+	public Panel(int x,int y, int num){
+		if(x>0 && y>0 && x*y >= num){
+			PANEL_WIDTH = x;
+			PANEL_HEIGHT = y;
+			MINE_NUM = num;
+			minePlanted = new boolean[PANEL_WIDTH][PANEL_HEIGHT];
+		}else{
+			PANEL_WIDTH = -1;
+			PANEL_HEIGHT = -1;
+			MINE_NUM = -1;
+		}
+	}
+	private void PlantMines(int MineNum){
+		if(MineNum>0){
+			int tmpX = r.nextInt(PANEL_WIDTH);
+			int tmpY = r.nextInt(PANEL_HEIGHT);
+			if(PlantMine(tmpX,tmpY)){
+				PlantMines(MineNum-1);
+			}else{
+				PlantMines(MineNum);
+			}
+		}
+	}
+	private boolean PlantMine(int x,int y){
+		if(x>0 && x<PANEL_WIDTH  && y>0 && y<PANEL_HEIGHT && !minePlanted[x][y]){
+			minePlanted[x][y] = true;
+			return true;
+		}
+		return false;
 	}
 }
