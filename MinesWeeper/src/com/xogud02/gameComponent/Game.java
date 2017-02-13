@@ -53,12 +53,13 @@ class Panel{
 	public final int MINE_NUM;
 	private boolean[][] minePlanted;
 	private static final Random r = new Random();
-	public Panel(int x,int y, int num){
-		if(x>0 && y>0 && x*y >= num){
+	public Panel(int x,int y, int mineNum){
+		if(x>0 && y>0 && x*y >= mineNum){
 			PANEL_WIDTH = x;
 			PANEL_HEIGHT = y;
-			MINE_NUM = num;
+			MINE_NUM = mineNum;
 			minePlanted = new boolean[PANEL_WIDTH][PANEL_HEIGHT];
+			PlantMines(mineNum);
 		}else{
 			PANEL_WIDTH = -1;
 			PANEL_HEIGHT = -1;
