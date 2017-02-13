@@ -10,7 +10,7 @@ public class MommooPanel {
 	private final MinePlant MINE_PLANT;
 	
 	public static void main(String[] args){
-		MommooPanel mine = new MommooPanel(7,7,10);
+		MommooPanel mine = new MommooPanel(-1,7,10);
 		/** Debugging */
 		System.out.println(mine);
 	}
@@ -30,10 +30,15 @@ public class MommooPanel {
 	private void isValid(final int col,final int row,final int mineCnt){
 		if(col>=MIN_COL&&col<=MAX_COL
 			&&row>=MIN_ROW&&row<=MAX_ROW
-			&&mineCnt>=MIN_MINE_CNT&&mineCnt<=MAX_MINE_CNT){}
-		else new Exception("col is valid from "+MIN_COL+"to"+MAX_COL+"\n"
-				+ "row is valid from "+MIN_ROW+" to "+MAX_ROW+"\n"
-				+ "mineCnt is valid from "+MIN_MINE_CNT+" to " +MAX_MINE_CNT);
+			&&mineCnt>=MIN_MINE_CNT&&mineCnt<=MAX_MINE_CNT){
+		} else
+			try {
+				throw new Exception("col is valid from "+MIN_COL+"to"+MAX_COL+"\n"
+						+ "row is valid from "+MIN_ROW+" to "+MAX_ROW+"\n"
+						+ "mineCnt is valid from "+MIN_MINE_CNT+" to " +MAX_MINE_CNT);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 	}
 	
 	/**
