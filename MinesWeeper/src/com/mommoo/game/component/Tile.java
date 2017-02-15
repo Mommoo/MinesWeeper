@@ -1,4 +1,4 @@
-package com.mommoo.game.object;
+package com.mommoo.game.component;
 /**
  * 
  * @author mommoo
@@ -7,14 +7,14 @@ package com.mommoo.game.object;
  * Tile objects have properties that InnerElement and OuterElement
  * 
  */
-public class MommooTile {
+public class Tile {
 	
 	public enum InnerElement{
-		EMPTY,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,MINE
+		EMPTY,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,MINE;
 	}
 	
 	public enum OuterElement{
-		NONE,FLAG,QUESTION
+		NONE,FLAG,QUESTION;
 	}
 	
 	private final InnerElement INNER_ELEMENT;
@@ -22,7 +22,7 @@ public class MommooTile {
 	private int outerTileElementPosition = 0;
 	private boolean isShow;
 	
-	public MommooTile(InnerElement elem){
+	public Tile(InnerElement elem){
 		this.INNER_ELEMENT = elem;
 	}
 	
