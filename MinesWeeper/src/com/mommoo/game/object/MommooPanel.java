@@ -1,8 +1,12 @@
-package com.xogud02.gameComponent;
+package com.mommoo.game.object;
 
 import java.util.HashSet;
 import java.util.Random;
-
+/**
+ * 
+ * @author mommoo
+ *
+ */
 public class MommooPanel {
 	public final int PANEL_COL, PANEL_ROW, MINE_CNT;
 	public final int MAX_COL = 7, MAX_ROW = 7, MAX_MINE_CNT = MAX_COL*MAX_ROW/2;
@@ -12,7 +16,7 @@ public class MommooPanel {
 	public static void main(String[] args){
 		MommooPanel mine = new MommooPanel(7,7,20);
 		/** Debugging */
-	//	System.out.println(mine);
+		System.out.println(mine);
 	}
 	
 	public MommooPanel(final int col,final int row,final int mineCnt){
