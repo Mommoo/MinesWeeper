@@ -49,7 +49,7 @@ class MatrixInfo{
 		MIDDLE_TOP(+1,0),MIDDLE_BOTTOM(-1,0),
 		RIGHT_TOP(-1,+1),RIGHT(0,+1),RIGHT_BOTTOM(+1,+1);
 		
-		private final int ROW_DIRECTION,COL_DIRECTION;
+		private final int ROW_DIRECTION, COL_DIRECTION;
 		
 		private MatrixDirection(int rowDirection, int colDirection){
 			this.ROW_DIRECTION = rowDirection;

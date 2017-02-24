@@ -21,7 +21,6 @@ public class Tile {
 	private static final OuterElement[] OUTER_ELEMENT_ARRAY = OuterElement.values();
 	private int outerTileElementPosition = 0;
 	private boolean isShow;
-	
 	public Tile(InnerElement elem){
 		this.INNER_ELEMENT = elem;
 	}

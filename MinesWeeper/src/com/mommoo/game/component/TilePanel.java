@@ -13,12 +13,12 @@ import com.mommoo.game.component.Tile.InnerElement;
  */
 public class TilePanel {
 	public final int PANEL_COL, PANEL_ROW, MINE_CNT;
-	public final int MAX_COL = 7, MAX_ROW = 7, MAX_MINE_CNT = MAX_COL*MAX_ROW/2;
+	public final int MAX_COL = 50, MAX_ROW = 50, MAX_MINE_CNT = MAX_COL*MAX_ROW/2;
 	public final int MIN_COL = 1, MIN_ROW = 1, MIN_MINE_CNT = MIN_COL*MIN_ROW;
 	private final ElementManager ELEMENT_MANAGER;
 	
 	public static void main(String[] args){
-		TilePanel mine = new TilePanel(7,7,15);
+		TilePanel mine = new TilePanel(50,50,55);
 		/** Debugging */
 		System.out.println(mine);
 	}
