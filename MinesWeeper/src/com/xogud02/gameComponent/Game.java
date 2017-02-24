@@ -1,87 +1,144 @@
 package com.xogud02.gameComponent;
 
+import java.util.HashSet;
 import java.util.Random;
 
 public class Game {
-
+	public static void main(String[] args) {
+		TilePanel tp = new TilePanel(10,15,20);
+		System.out.println(tp);
+	}
 }
 
 class Tile{
-	public final static int TILE_CONTENT_EMPTY = 0;
-	public final static int TILE_CONTENT_1 = 1;
-	public final static int TILE_CONTENT_2 = 2;
-	public final static int TILE_CONTENT_3 = 3;
-	public final static int TILE_CONTENT_4 = 4;
-	public final static int TILE_CONTENT_5 = 5;
-	public final static int TILE_CONTENT_6 = 6;
-	public final static int TILE_CONTENT_7 = 7;
-	public final static int TILE_CONTENT_8 = 8;
-	public final static int TILE_CONTENT_MINE = 9;
+	public enum TileContent{
+		EMPTY,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,MINE;
+	}
+	public enum TileState{
+		HIDDEN, REVEALED, FLAGGED;
+	}
 	
-	public final static int TILE_STATE_HIDDEN = 0;
-	public final static int TILE_STATE_REVEALED = 1;
-	public final static int TILE_STATE_FLAGGED = 2;
-	
-	private final int TILE_CONTENT;
-	private int tileState;
-	public Tile(int content){
-		if(content>=0 && content<=9){
-			TILE_CONTENT = content;
-		}else{
-			TILE_CONTENT = -1;
+	private final TileContent TILE_CONTENT;
+	private TileState tileState;
+	public Tile(final TileContent content){
+		TILE_CONTENT = content;
+		tileState = TileState.HIDDEN;
+	}
+	public void setState(final TileState state){
+		tileState = state;
+	}
+	public TileContent getContent(){
+		return TILE_CONTENT;
+	}
+	public TileState getState(){
+		return tileState; 
+	}
+	@Override
+	public String toString(){
+		if(TILE_CONTENT == TileContent.MINE){
+			return "* ";
 		}
-	}
-	public void setState(int state){
-		if(state>=0){
-			this.tileState = state;
-		}else{
-			this.tileState = -1;
+		if(TILE_CONTENT == TileContent.EMPTY){
+			return "бр ";
 		}
-	}
-	public int getState(){
-		return this.tileState; 
-	}
-	public boolean isValid(){
-		if(TILE_CONTENT<0 || this.tileState<0)
-			return false;
-		return true;
+		return TILE_CONTENT.ordinal()+" ";
 	}
 }
 
-class Panel{
-	public final int PANEL_WIDTH, PANEL_HEIGHT;
-	public final int MINE_NUM;
-	private boolean[][] minePlanted;
+class TilePanel{
+	private final int PANEL_ROW, PANEL_COL;
+	private static final int MIN_PANEL_ROW = 10, MIN_PANEL_COL = 10;
+	private static final int MAX_PANEL_ROW = 100, MAX_PANEL_COL = 100;
+	private final int MINE_NUM;
+	private final boolean[][] minePlanted;
 	private static final Random r = new Random();
-	public Panel(int x,int y, int mineNum){
-		if(x>0 && y>0 && x*y >= mineNum){
-			PANEL_WIDTH = x;
-			PANEL_HEIGHT = y;
+	private Tile[][] tiles;
+	public TilePanel(final int row,final int col,final int mineNum){
+		if(row>=MIN_PANEL_ROW && col>=MIN_PANEL_COL &&row<=MAX_PANEL_ROW && col <= MAX_PANEL_COL && row*col >= mineNum){
+			PANEL_ROW = row;
+			PANEL_COL = col;
 			MINE_NUM = mineNum;
-			minePlanted = new boolean[PANEL_WIDTH][PANEL_HEIGHT];
-			PlantMines(mineNum);
+			minePlanted = new boolean[PANEL_ROW][PANEL_COL];
+			tiles = new Tile[PANEL_ROW][PANEL_COL];
+			plantMines(mineNum);
+			setTiles();
 		}else{
-			PANEL_WIDTH = -1;
-			PANEL_HEIGHT = -1;
+			PANEL_ROW = -1;
+			PANEL_COL = -1;
 			MINE_NUM = -1;
+			minePlanted = new boolean[1][1];
+			System.out.println("ERROR : public TilePanel(...)");
 		}
 	}
-	private void PlantMines(int MineNum){
-		if(MineNum>0){
-			int tmpX = r.nextInt(PANEL_WIDTH);
-			int tmpY = r.nextInt(PANEL_HEIGHT);
-			if(PlantMine(tmpX,tmpY)){
-				PlantMines(MineNum-1);
-			}else{
-				PlantMines(MineNum);
+	private void plantMines(final int MineNum){
+		final HashSet<Integer> HASH_SET = new HashSet<>();
+		int tmpMul, tmpRow, tmpCol;
+		while(HASH_SET.size()<MineNum){
+			tmpMul = r.nextInt(PANEL_ROW * PANEL_COL);
+			tmpRow = tmpMul/PANEL_COL;
+			tmpCol = tmpMul%PANEL_COL;
+			minePlanted[tmpRow][tmpCol] = true;
+			HASH_SET.add(tmpMul);
+		}
+	}
+	private void setTiles(){
+		final int TMP_CONTENT[][] = MatrixCalculator.getMineHintCounter(minePlanted);
+		for(int i=0;i<PANEL_ROW;i++){
+			for(int j=0;j<PANEL_COL;j++){
+				if(minePlanted[i][j]){
+					tiles[i][j] = new Tile(Tile.TileContent.MINE);
+				}else{
+					tiles[i][j] = new Tile(Tile.TileContent.values()[TMP_CONTENT[i][j]]);
+				}
 			}
 		}
 	}
-	private boolean PlantMine(int x,int y){
-		if(x>0 && x<PANEL_WIDTH  && y>0 && y<PANEL_HEIGHT && !minePlanted[x][y]){
-			minePlanted[x][y] = true;
-			return true;
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<PANEL_ROW;i++){
+			for(int j=0;j<PANEL_COL;j++){
+				sb.append(tiles[i][j]);
+			}
+			sb.append("\n");
 		}
-		return false;
+		return sb.toString();
+	}
+}
+
+class MatrixCalculator{
+	private MatrixCalculator(){};
+	private static int maxRow=0,maxCol=0;
+	private static int[][] tmpMatrix;
+	public static int[][] getMineHintCounter(final boolean[][] minePlanted){
+		maxRow = minePlanted.length;
+		maxCol = minePlanted[0].length;
+		tmpMatrix = new int[maxRow][maxCol];
+		for(int i=0;i<maxRow;i++){
+			for(int j=0;j<maxCol;j++){
+				if(minePlanted[i][j]){
+					addFourDirection(i,j);
+				}
+			}
+		}
+		return tmpMatrix;
+	}
+	private static void addFourDirection(final int row, final int col){
+		addHere(row+1,col);
+		addHere(row-1,col);
+		addHere(row,col+1);
+		addHere(row,col-1);
+		addHere(row+1,col+1);
+		addHere(row+1,col-1);
+		addHere(row-1,col+1);
+		addHere(row-1,col-1);
+	}
+	private static void addHere(final int row, final int col){
+		if(isValid(row,col)){
+			tmpMatrix[row][col]++;
+		}
+	}
+	private static boolean isValid(final int row, final int col){
+		return row>=0 && row<maxRow && col >= 0 && col < maxCol;
 	}
 }
