@@ -40,6 +40,7 @@ public class Tile {
 		return isShow;
 	}
 	
+	
 	/** If user click mouse right button, change outer-tile state */
 	public OuterElement changeOuterTile(){
 		if(++outerTileElementPosition == OUTER_ELEMENT_ARRAY.length){

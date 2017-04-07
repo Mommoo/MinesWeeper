@@ -1,5 +1,6 @@
 package com.mommoo.game.component;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -13,12 +14,12 @@ import com.mommoo.game.component.Tile.InnerElement;
  */
 public class TilePanel {
 	public final int PANEL_COL, PANEL_ROW, MINE_CNT;
-	public final int MAX_COL = 7, MAX_ROW = 7, MAX_MINE_CNT = MAX_COL*MAX_ROW/2;
+	public final int MAX_COL = 20, MAX_ROW = 20, MAX_MINE_CNT = MAX_COL*MAX_ROW/2;
 	public final int MIN_COL = 1, MIN_ROW = 1, MIN_MINE_CNT = MIN_COL*MIN_ROW;
 	private final ElementManager ELEMENT_MANAGER;
 	
 	public static void main(String[] args){
-		TilePanel mine = new TilePanel(7,7,15);
+		TilePanel mine = new TilePanel(10,10,50);
 		/** Debugging */
 		System.out.println(mine);
 	}
@@ -37,12 +38,12 @@ public class TilePanel {
 	private void isValid(final int col,final int row,final int mineCnt){
 		if(col>=MIN_COL&&col<=MAX_COL
 			&&row>=MIN_ROW&&row<=MAX_ROW
-			&&mineCnt>=MIN_MINE_CNT&&mineCnt<=MAX_MINE_CNT){
+			&&mineCnt>=MIN_MINE_CNT&&mineCnt<=col*row/2){
 		} else
 			try {
 				throw new Exception("col is valid from "+MIN_COL+" to "+MAX_COL+"\n"
 						+ "row is valid from "+MIN_ROW+" to "+MAX_ROW+"\n"
-						+ "mineCnt is valid from "+MIN_MINE_CNT+" to " +MAX_MINE_CNT);
+						+ "mineCnt is valid from "+MIN_MINE_CNT+" to " +col*row/2);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -109,7 +110,7 @@ public class TilePanel {
 			for(int row=0; row<PANEL_ROW; row++){
 				for(int col=0; col<PANEL_COL; col++){
 					int hint = ELEMENT_REPOSITORY[row][col];
-					BLUE_PRINT.append(hint == MINE_SYMBOL?"¡á ":hint+" ");
+					BLUE_PRINT.append(hint == MINE_SYMBOL?"â–  ":hint+" ");
 				}
 				BLUE_PRINT.append("\n");
 			}
@@ -121,7 +122,7 @@ public class TilePanel {
 				}
 				BLUE_PRINT.append("\n");
 			}
-			
+			new SimpleDateFormat("yyyy");
 			return BLUE_PRINT.toString();
 		}
 	}
