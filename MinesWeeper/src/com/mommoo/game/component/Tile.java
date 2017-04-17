@@ -42,10 +42,13 @@ public class Tile {
 	
 	
 	/** If user click mouse right button, change outer-tile state */
-	public OuterElement changeOuterTile(){
+	public void changeOuterTile(){
 		if(++outerTileElementPosition == OUTER_ELEMENT_ARRAY.length){
 			outerTileElementPosition = 0;
 		}
+	}
+	
+	public OuterElement getTileOuterElement(){
 		return OUTER_ELEMENT_ARRAY[outerTileElementPosition];
 	}
 }

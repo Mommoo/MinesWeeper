@@ -162,4 +162,9 @@ public class TilePanel {
 		}
 		return this.ELEMENT_MANAGER.INNER_ELEMENT_REPOSITORY;
 	}
+	
+	public InnerElement getInnerElement(int col, int row){
+		if(this.ELEMENT_MANAGER.INNER_ELEMENT_REPOSITORY[0][0] == null) valueOfInnerElementArray();
+		return this.ELEMENT_MANAGER.INNER_ELEMENT_REPOSITORY[col][row];
+	}
 }
