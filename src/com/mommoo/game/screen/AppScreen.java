@@ -1,12 +1,11 @@
 package com.mommoo.game.screen;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.mommoo.game.main.GameDescription;
+import com.mommoo.main.GameDescription;
 import com.mommoo.game.screen.view.intro.GameIntroView;
 import com.mommoo.manager.ScreenManager;
 
@@ -40,6 +39,14 @@ public class AppScreen{
 	
 	public static void setIntroView(){
 		setView(new Dimension(GameDescription.DEFAULT_APP_SCREEN_WIDTH,GameDescription.DEFAULT_APP_SCREEN_HEIGHT),INTRO_VIEW);
+	}
+
+	public static Point getLocation(){
+		return MAIN_FRAME.getLocation();
+	}
+
+	public static Dimension getSize(){
+		return MAIN_FRAME.getSize();
 	}
 	
 	public static void show(){

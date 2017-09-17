@@ -1,15 +1,20 @@
-package com.mommoo.game.main;
+package com.mommoo.main;
 
-import static com.mommoo.game.main.GameDescription.*;
+import com.mommoo.manager.ImageManager;
 
-import java.awt.Dimension;
+import static com.mommoo.main.GameDescription.*;
+
+import java.awt.*;
 
 /**
  * 
  * @author mommoo
  *
  * GameDescriptionObejct is Helper class to apply option to game easily.
- * Users must don't modify this class.  
+ * Users have to don't modify this class.
+ * If User want to modify option, try modify GameDescription.
+ *
+ * @see com.mommoo.main.GameDescription;
  * 
  */
 public class GameDescriptionObject {
@@ -39,8 +44,8 @@ public class GameDescriptionObject {
 			break;
 		}
 		
-		int gamePanelWidth = tileColumn * MINE_SIZE;
-		int gamePanelHeight = tileRow * MINE_SIZE;
+		int gamePanelWidth = tileColumn * TILE_SIZE;
+		int gamePanelHeight = tileRow * TILE_SIZE;
 		
 		viewWidth += gamePanelWidth;
 		viewHeight += gamePanelHeight;
@@ -60,5 +65,27 @@ public class GameDescriptionObject {
 	public static int[] getLevelGameElement(int level){
 		if(level == LEVEL1) return new int[]{LEVEL1_GAME_VIEW_TILE_COL_CNT,LEVEL1_GAME_VIEW_TILE_ROW_CNT,LEVEL1_GAME_VIEW_MINE_CNT};
 		return null;
+	}
+
+	public static Image[] getOuterTileIcons(){
+		return new Image[]{FLAG_ICON,QUESTION_ICON};
+	}
+
+	public static Image[] getNumberIcons(){
+		return new Image[]{ONE_ICON,TWO_ICON,THREE_ICON,FOUR_ICON,FIVE_ICON,SIX_ICON,SEVEN_ICON,EIGHT_ICON};
+	}
+
+	public static Image getMineIcon(){
+		return MINE_ICON;
+	}
+
+	public static Image get_X_Icon() { return X_ICON;}
+
+	public static Color getMainColor(){
+		return Color.decode(MAIN_COLOR_CODE);
+	}
+
+	public static Color getSubColor(){
+		return Color.decode(SUB_COLOR_CODE);
 	}
 }

@@ -6,7 +6,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import com.mommoo.game.main.GameDescription;
+import com.mommoo.main.GameDescription;
 import com.mommoo.manager.ColorManager;
 
 /**

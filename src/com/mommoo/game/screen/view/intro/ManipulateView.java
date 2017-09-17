@@ -21,10 +21,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.mommoo.game.main.GameDescription;
-import com.mommoo.game.main.GameDescriptionObject;
+import com.mommoo.main.GameDescription;
+import com.mommoo.main.GameDescriptionObject;
 import com.mommoo.game.screen.AppScreen;
-import com.mommoo.game.screen.view.game.GameView;
+import com.mommoo.game.screen.view.game.GamePanel;
 import com.mommoo.manager.ColorManager;
 import com.mommoo.manager.FontManager;
 import com.mommoo.manager.ScreenManager;
@@ -55,7 +55,7 @@ class ManipulateView extends JPanel{
 		GAME_START_BTN.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		GAME_START_BTN.addActionListener((e)->{
 			int[] gameElement = GameDescriptionObject.getLevelGameElement(level);
-			GameView gameView = new GameView(gameElement[0],gameElement[1],gameElement[2]);
+			GamePanel gameView = new GamePanel(gameElement[0],gameElement[1],gameElement[2]);
 			AppScreen.setView(GameDescriptionObject.getLevelDimension(level),gameView);
 		});
 	}
@@ -87,8 +87,8 @@ class ManipulateView extends JPanel{
 				private final RoundRectangle2D LEFT_BTN = new RoundRectangle2D.Double();
 				private final Rectangle2D MIDDLE_BTN = new Rectangle2D.Double();
 				private final RoundRectangle2D RIGHT_BTN = new RoundRectangle2D.Double();
-				private final Color CHOICE_COLOR = GameDescription.MAIN_COLOR;
-				private final Color NOT_CHOICE_COLOR = GameDescription.SUB_COLOR;
+				private final Color CHOICE_COLOR = GameDescriptionObject.getMainColor();
+				private final Color NOT_CHOICE_COLOR = GameDescriptionObject.getSubColor();
 				private final Color CHOICE_TEXT_COLOR = Color.WHITE;
 				private final Font CHOICE_FONT = FontManager.getTrackFont(Font.BOLD,SM.dip2px(6));
 				private final Font NOT_CHOICE_FONT = FontManager.getTrackFont(Font.PLAIN,SM.dip2px(5));

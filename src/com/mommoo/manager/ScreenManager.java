@@ -45,5 +45,21 @@ public class ScreenManager {
 	public static ScreenManager getInstance(){
 		return SCREEN_MANAGER;
 	}
+
+	public static void main(String str[]){
+		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenWidth = res.width;
+		int screenHeight = res.height;
+
+		Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		int windowWidth = winSize.width;
+		int windowHeight = winSize.height;
+
+		int windowNavigationBarHeight = screenHeight - windowHeight;
+
+		System.out.println("디바이스의 넓이 : "+screenWidth+"px , 디바이스의 높이 : "+screenHeight+"px");
+		System.out.println("윈도우OS 에서 사용가능한 그래픽 넓이 :  " + windowWidth+"px , 윈도우OS 에서 사용가능한 그래픽 높이 : "+windowHeight+"px");
+		System.out.println("윈도우OS 에서의 네비게이션바 높이\n(만약 윈도우 OS에서 다른 네비게이션바 처럼 화면을 차지하는 그래픽 요소가 추가되면 코드 변경해야함)\n"+windowNavigationBarHeight+"px");
+	}
 }
 

@@ -2,30 +2,27 @@ package com.mommoo.game.screen.view.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Paint;
-import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
+import java.util.concurrent.locks.Lock;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.mommoo.game.main.GameDescription;
 import com.mommoo.manager.FontManager;
 import com.mommoo.manager.ScreenManager;
 
 class NavigationView extends JPanel{
 	private static final ScreenManager SM = ScreenManager.getInstance();
 	private final TimerView TIMER_VIEW = new TimerView();
-	private final MineCountView MINE_COUNT_VIEW = new MineCountView(100);
+	private final MineCountView MINE_COUNT_VIEW;
+	private final int MAX_MINE_CNT;
 	
-	NavigationView(){
+	NavigationView(int mineCnt){
+		this.MAX_MINE_CNT = mineCnt;
+		MINE_COUNT_VIEW = new MineCountView(mineCnt);
 		setLayout(new BorderLayout());
 		add(TIMER_VIEW,BorderLayout.WEST);
 		add(MINE_COUNT_VIEW,BorderLayout.EAST);
@@ -33,13 +30,36 @@ class NavigationView extends JPanel{
 		setOpaque(true);
 	}
 
+	void decreaseMine(){
+		MINE_COUNT_VIEW.setValue((--MINE_COUNT_VIEW.mineCnt)+"");
+	}
+
+	void increaseMine(){
+		MINE_COUNT_VIEW.setValue((++MINE_COUNT_VIEW.mineCnt)+"");
+	}
+
+	int getMineCnt(){
+		return MINE_COUNT_VIEW.mineCnt;
+	}
+
+	void reset(){
+		MINE_COUNT_VIEW.mineCnt = this.MAX_MINE_CNT;
+		MINE_COUNT_VIEW.setValue((this.MAX_MINE_CNT)+"");
+		TIMER_VIEW.resetTimer();
+		TIMER_VIEW.resumeTimer();
+	}
+
+	void stopTime(){
+		TIMER_VIEW.stopTimer();
+	}
+
+	String getTime(){
+		return TIMER_VIEW.TIME.toString();
+	}
+
 	private class GuideView extends JPanel{
 		
 		private final JLabel VALUE_LABEL = new JLabel("",JLabel.CENTER);
-//		private final int PREFERRED_WIDTH = GameDescription.DEFAULT_APP_SCREEN_WIDTH/4;
-//		private final int PREFERRED_HEIGHT = GameDescription.DEFAULT_APP_SCREEN_HEIGHT/9;
-		private final RoundRectangle2D RECT = new RoundRectangle2D.Double();
-		private boolean once;
 		
 		private GuideView(String guideText){
 			initValueLabel();
@@ -66,6 +86,17 @@ class NavigationView extends JPanel{
 		private final Time TIME = new Time();
 		private Thread timerThread;
 		private boolean isRunning;
+		private final Runnable RUNNABLE =()->{
+			try {
+				while(isRunning){
+					Thread.sleep(1000);
+					TIME.increase();
+					setValue(TIME.toString());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		};
 		
 		private TimerView(){
 			super("Elapsed Time");
@@ -74,17 +105,7 @@ class NavigationView extends JPanel{
 		}
 		
 		private void initTimer(){
-			timerThread = new Thread(()->{
-				try {
-					while(isRunning){
-						Thread.sleep(1000);
-						TIME.increase();
-						setValue(TIME.toString());
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+			timerThread = new Thread(RUNNABLE);
 		}
 		
 		private void startTimer(){
@@ -99,15 +120,13 @@ class NavigationView extends JPanel{
 		}
 		
 		private void stopTimer(){
-			try {
-				timerThread.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			timerThread.interrupt();
+			isRunning = false;
 		}
 		
 		private void resumeTimer(){
-			timerThread.notifyAll();
+			timerThread = new Thread(RUNNABLE);
+			startTimer();
 		}
 		
 		private void resetTimer(){
@@ -148,16 +167,6 @@ class NavigationView extends JPanel{
 		private MineCountView(int mineCnt){
 			super("Left Mines");
 			this.mineCnt = mineCnt;
-			setValue(mineCnt+"");
-		}
-		
-		private void decreaseMine(){
-			mineCnt--;
-			setValue(mineCnt+"");
-		}
-		
-		private void increaseMine(){
-			mineCnt++;
 			setValue(mineCnt+"");
 		}
 	}
